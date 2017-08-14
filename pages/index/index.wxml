@@ -1,11 +1,12 @@
 <view class="m-view_{{isGroup ? 2 : 1}}">
   <view class="view-header">
     <!-- 个人信息 -->
-    <view class="header-section__self" wx:if="{{!isGroup}}">
-      <view class="header_hd">
-        <view class="boxF">
-          <view class="boxS">
-            <view class="boxT  avatar " style="background:url({{userData.avatarurl}})">
+    <view class="header">
+     <view class="header-section__self1" wx:if="{{!isGroup}}">
+      <view class="header_hd1">
+        <view class="boxF1">
+          <view class="boxS1">
+            <view class="boxT avatar1" style="background:url({{userData.avatarurl}})">
               <view class="overlay"></view>
             </view>
           </view>
@@ -17,12 +18,12 @@
     </view>
     <view class="header-section" wx:if="{{isGroup}}" wx:for="{{speedsData}}" wx:for-item="user" wx:key="user">
       <view class="header_hd">
-        <view class="boxF">
-          <view class="boxS">
-            <view class="boxT avatar" style="background:url({{user.avatarurl}});">
+        <!-- <view class="boxF"> -->
+          <!-- <view class="boxS"> -->
+            <view class="boxT avatar" style="background:url({{user.avatarurl}});background-size:144rpx">
               <view class="overlay"></view>
-            </view>
-          </view>
+            <!-- </view> -->
+          <!-- </view> -->
         </view>
         <view class="ranking ranking_{{index}}"></view>
         <view class="header_bd">
@@ -32,6 +33,9 @@
         </view>
       </view>
     </view>
+    
+    </view>
+   
   </view>
   <!-- End .view-header -->
   <!-- 排名列表 -->
@@ -47,8 +51,8 @@
       <view class="content_num">
         <view class="lists_hd">{{index+1}}</view>
         <view class="lists_bd">
-          <image src="{{items.avatarurl}}"></image>
-          <text>{{items.nickname}}</text>
+          <image src="{{item.avatarurl}}"></image>
+          <text>{{item.nickname}}</text>
         </view>
         <view class="lists_ft">{{item.timespan}}秒</view>
       </view>
