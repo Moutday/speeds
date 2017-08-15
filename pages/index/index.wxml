@@ -29,7 +29,7 @@
         <view class="header_bd">
           <view class="user">{{user.nickname ||'　'}}</view>
           <view class="line">X</view>
-          <view class="counts">{{user.timespan?user.timespan +'秒':'　'}}</view>
+          <view class="counts">{{user.timespan?user.timespan:'　'}}</view>
         </view>
       </view>
     </view>
@@ -54,7 +54,7 @@
           <image src="{{item.avatarurl}}"></image>
           <text>{{item.nickname}}</text>
         </view>
-        <view class="lists_ft">{{item.timespan}}秒</view>
+        <view class="lists_ft">{{item.timespan}}</view>
       </view>
     </view>
   </view>

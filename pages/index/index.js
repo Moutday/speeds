@@ -6,7 +6,6 @@ let that;
 Page({
     data: {
         isGroup:false,
-        event_id : '',
         share_title: '转发到其他微信群PK手速',
         app_title: '点击生成小程序码',
         scene: getApp().globalData.scene,
@@ -21,15 +20,10 @@ Page({
     onLoad: function(options) {
         // 页面初始化 options为页面跳转所带来的参数
         that = this;
-        console.log("options",options);
         if(options.event_id){
-             that.setData({
-                event_id: options.event_id
-            }); 
-        }else{
-             that.setData({
-                event_id: '',
-            }); 
+            that.setData({ 
+                event_id: options.event_id,
+            });
         }
         API.getBanner().then(res => {
             that.setData({
@@ -46,9 +40,8 @@ Page({
         let scene       = getApp().globalData.scene;
         that.setData({ 
             userData: Auth.user(),
-            scene: scene
+            scene: scene,
         });
-
         let args={};
         if (scene == 1044) {
             that.setData({ isGroup: true});
@@ -57,7 +50,6 @@ Page({
                     args.code = code;
                 }
                 Auth.checkOrGetUserInfo().then(user_res=>{
-                    console.log("user_res",user_res);
                 if(user_res.iv){
                     args.iv = user_res.iv;
                     args.encrypted_data = user_res.encryptedData;
@@ -68,17 +60,7 @@ Page({
                     userData: user_res.userInfo
                 });
                 wx.setStorageSync('user', user_res.userInfo);
-
-                if(that.data.event_id){
-                    args.event_id = that.data.event_id; 
-                }else{
-                    let event_id = Auth.openid() + Math.random();
-                    args.event_id = event_id;
-                    that.setData({ 
-                        event_id: event_id,
-                    });
-                }
-                
+                args.event_id = that.data.event_id;
                 if(gid){
                     args.gid = gid;
                     that.getGroupSpeeds(args);
@@ -103,11 +85,8 @@ Page({
             });
         }else{
             Auth.checkOrLogin().then(res=>{//登录
-                let event_id = Auth.openid() + Math.random();
-                console.log("event_id:",event_id);
                 that.setData({
-                    userData: res,
-                    event_id: event_id
+                    userData: res
                 });
             });
           
@@ -160,8 +139,6 @@ Page({
             });
         });
     },
-
-
     // 预览图片功能
     previewImageTap: function(e) {
         if (this.data.weapp.appid) {
@@ -194,13 +171,18 @@ Page({
         // 页面关闭
     },
     // 分享页面功能
-    onShareAppMessage: function() {
+    onShareAppMessage: function(res) {
+        var event_id = Util.uuid();
+        that.setData({ 
+                event_id:event_id
+            });
+        // 来自页面内转发按钮
         return {
             title: '本群手速排行榜，最慢的发红包！',
-            path: '/pages/index/index?event_id='+that.data.event_id,
+            path: '/pages/index/index?event_id='+event_id,
             success(res) {
                 let data = {};
-                data.event_id = that.data.event_id;
+                data.event_id = event_id;
                 that.getGroupSpeeds(data);
             }
         }
